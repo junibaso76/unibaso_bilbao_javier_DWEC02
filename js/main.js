@@ -3,7 +3,7 @@ let tarifasJSON = null;
 let gastosJSON = null;
 let tarifasJSONpath = 'data/tarifasCombustible.json';
 let gastosJSONpath = 'data/gastosCombustible.json';
-import { gastoCombustible } from './gastoCombustible.js';
+import { GastoCombustible } from './gastoCombustible.js';
 
 // ------------------------------ 2. CARGA INICIAL DE DATOS (NO TOCAR!) ------------------------------
 // Esto inicializa los eventos del formulario y carga los datos iniciales
@@ -61,18 +61,18 @@ function calcularGastoTotal() {
         2020: 0
     };
 
-    // Suponiendo que los datos están en la variable gastosJSON
+    // suponiendo que los datos están en la variable gastosJSON
     gastosJSON.forEach(viaje => {
         // Obtener el año de la fecha del viaje
         const year = new Date(viaje.date).getFullYear();
 
-        // Sumar el precioViaje al año correspondiente en aniosArray si está en el rango
+        // sumar el precioViaje al año correspondiente 
         if (aniosArray.hasOwnProperty(year)) {
             aniosArray[year] += viaje.precioViaje;
         }
     });
 
-    // Mostrar los resultados en el HTML
+    // mostrar los resultados
     for (const [year, total] of Object.entries(aniosArray)) {
         const gastoElement = document.getElementById(`gasto${year}`);
         if (gastoElement) {
@@ -89,7 +89,7 @@ async function guardarGasto() {
     const kilometers = parseFloat(document.getElementById('kilometers').value);
 
     // Crear el objeto GastoCombustible
-    const nuevoGasto = new gastoCombustible(vehicleType, date, kilometers);
+    const nuevoGasto = new GastoCombustible(vehicleType, date, kilometers);
 
     // Cargar y recorrer las tarifas para calcular el precio del viaje
     const year = new Date(date).getFullYear();
@@ -103,24 +103,24 @@ async function guardarGasto() {
         return;
     }
 
-    // Mostrar el gasto en "Gastos recientes"
+    // mostrar el gasto en "Gastos recientes"
     const expenseList = document.getElementById('expense-list');
     const expenseItem = document.createElement('li');
     expenseItem.textContent = nuevoGasto.convertToJSON();
     expenseList.appendChild(expenseItem);
 
-    // Actualizar el gasto total del año correspondiente
+    // actualizar el gasto total del año correspondiente
     const gastoAnualElement = document.getElementById(`gasto${year}`);
     if (gastoAnualElement) {
         const gastoActual = parseFloat(gastoAnualElement.textContent) || 0;
         gastoAnualElement.textContent = (gastoActual + nuevoGasto.precioViaje).toFixed(2);
     }
 
-    // Limpiar el formulario
+    // limpiar el formulario
     document.getElementById('fuel-form').reset();
 }
 
-// Asigna el evento de envío del formulario
+// asigna el evento de envío del formulario
 document.getElementById('fuel-form').addEventListener('submit', (event) => {
     event.preventDefault(); // Evita la recarga de la página
     

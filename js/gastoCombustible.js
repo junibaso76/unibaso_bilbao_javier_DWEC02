@@ -1,5 +1,5 @@
 // GastoCombustible
-class gastoCombustible {
+class GastoCombustible {
     constructor(vehicleType, date, kilometers) {
         this.vehicleType = vehicleType;
         this.date = date;
@@ -18,4 +18,4 @@ class gastoCombustible {
     }
 }
 
-export { gastoCombustible };
+export { GastoCombustible };
